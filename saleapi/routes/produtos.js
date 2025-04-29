@@ -22,7 +22,8 @@ router.post('/produtos', async(req,res)=>{
         const query = "insert into produto(nome,valor,quantidade) VALUES ($1, $2, $3) RETURNING *";
         const values = [nome,valor,quantidade]; // recebe a const dos req.body    
         const insercaoProduto = await client.query(query,values)
-        res.status(201).json(res.rows[0])
+        res.status(201).json(insercaoProduto.rows[0]);
+        
     } catch (error) {
         console.error("erro ao inserir produto",error);
         res.status(500).json({erro:"Erro ao inserir produto"})

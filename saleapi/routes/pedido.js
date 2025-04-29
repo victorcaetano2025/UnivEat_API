@@ -23,7 +23,7 @@ try {
     const query ="insert into pedido(codigo) values ($1) RETURNING *"; //returning * pode ser uma mensagem pois retorna o ultimo inserido
     const values = [codigo]
     const insercaopedido = await client.query(query,values)
-    res.status(201).json(res.rows[0])//a response que ira para o front ser a res.rows retornada pela query
+    res.status(201).json(insercaopedido.rows[0]);//a response que ira para o front ser a res.rows retornada pela query
 } catch (error) {
     console.error("erro no post pedidos",error)
     res.status(500).json({erro: "erro no post"})

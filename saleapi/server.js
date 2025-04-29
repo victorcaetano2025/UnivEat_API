@@ -11,6 +11,7 @@ app.use(json())
 app.use('/api',produto);
 app.use('/api',pedidos);
 
+
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
