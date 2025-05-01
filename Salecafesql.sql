@@ -2,27 +2,34 @@
 drop table if exists produto cascade;
 drop table if exists pedido cascade;
 drop table if exists carrinho cascade;
+
 create table produto (
-Id_produto serial primary key,
-nome varchar(255) unique not null,
-valor real not null,
-quantidade int not null,
-url_descricao varchar(255),
-url_img varchar(255)
+	id serial primary key,
+	name varchar(255) unique not null,
+	description varchar(255),
+	price real not null,
+	image text,
+	quantidade int not null,
+	category int references categorias(id_categoria)
 );
-create table pedido(
-id_pedido serial primary key,
-codigo int unique,
-expirou boolean default false
-);
-create table carrinho(
-pedido int references pedido(Id_pedido),
-produto int references produto(id_produto),
-quantidade_pedido int,
-primary key (pedido,produto,quantidade_pedido)
+create table categoria(
+	id_categoria serial primary key
+	tipo varchar(255)
 );
 
-insert into produto(nome,valor,quantidade) 
+create table pedido(
+	id_pedido serial primary key,
+	codigo int unique,
+	expirou boolean default false
+);
+create table carrinho(
+	pedido int references pedido(Id_pedido),
+	produto int references produto(id_produto),
+	quantidade_pedido int,
+	primary key (pedido,produto,quantidade_pedido)
+);
+
+insert into produto(name,price,quantidade) 
 values  ('salgado', 5.0, 10),
 		('esfirra', 8.0, 7),
 		('hamburguer', 9.0, 12);
