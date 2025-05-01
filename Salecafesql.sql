@@ -1,7 +1,12 @@
-
-drop table if exists produto cascade;
-drop table if exists pedido cascade;
 drop table if exists carrinho cascade;
+drop table if exists pedido cascade;
+drop table if exists produto cascade;
+drop table if exists categoria cascade;
+
+create table categoria(
+	id_categoria serial primary key,
+	tipo varchar(255)
+);
 
 create table produto (
 	id serial primary key,
@@ -10,11 +15,7 @@ create table produto (
 	price real not null,
 	image text,
 	quantidade int not null,
-	category int references categorias(id_categoria)
-);
-create table categoria(
-	id_categoria serial primary key
-	tipo varchar(255)
+	category int references categoria(id_categoria)
 );
 
 create table pedido(
@@ -22,30 +23,45 @@ create table pedido(
 	codigo int unique,
 	expirou boolean default false
 );
+
 create table carrinho(
-	pedido int references pedido(Id_pedido),
-	produto int references produto(id_produto),
+	pedido int references pedido(id_pedido),
+	produto int references produto(id),
 	quantidade_pedido int,
-	primary key (pedido,produto,quantidade_pedido)
+	primary key (pedido, produto)
 );
 
-insert into produto(name,price,quantidade) 
-values  ('salgado', 5.0, 10),
-		('esfirra', 8.0, 7),
-		('hamburguer', 9.0, 12);
+-- Inserção de categorias
+INSERT into categoria(id_categoria, tipo)
+values (1, 'salgados'), (2, 'bebidas'), (3, 'sobremesas'), (4, 'vitaminas');
 
+-- Inserção de produto
+INSERT INTO produto (id, name, description, price, image, quantidade, category)
+values (
+	14,
+	'Água Mineral',
+	'Água mineral sem gás. Garrafa 500ml.',
+	6.9,
+	'https://images.unsplash.com/photo-1564419320461-6870880221ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80',
+	10,
+	2
+);
+
+-- Inserção de pedidos
 insert into pedido(codigo)
-values  (55512),
-		(141412);
+values (55512), (141412);
 
-insert into carrinho (pedido,produto,quantidade_pedido)
-values(1,1,2),(1,2,1),(2,1,3);
+-- Inserção no carrinho
+insert into carrinho (pedido, produto, quantidade_pedido)
+values (1, 14, 2);
 
-
+-- Consultas
 select * from produto;
 select * from pedido;
 
-select p.codigo, pr.nome from carrinho
-inner join produto pr on produto = pr.id_produto
-inner join pedido p on pedido = p.id_pedido
+-- Consulta combinada
+select p.codigo, pr.name 
+from carrinho
+inner join produto pr on carrinho.produto = pr.id
+inner join pedido p on carrinho.pedido = p.id_pedido
 where p.codigo = 55512;

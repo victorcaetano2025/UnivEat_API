@@ -116,16 +116,7 @@ const menuItems = [
       image:
         "https://images.pexels.com/photos/18925017/pexels-photo-18925017/free-photo-of-beverages-in-fridge-in-store.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
       category: "bebidas",
-    },
-    {
-      id: 14,
-      name: "Água Mineral",
-      description: "Água mineral sem gás. Garrafa 500ml.",
-      price: 6.9,
-      image:
-        "https://images.unsplash.com/photo-1564419320461-6870880221ad?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      category: "bebidas",
-    },
+    }
   ]
   
   // Formatar preço para o formato brasileiro
