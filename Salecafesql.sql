@@ -5,7 +5,7 @@ drop table if exists categoria cascade;
 
 create table categoria(
 	id_categoria serial primary key,
-	tipo varchar(255)
+	category varchar(255)
 );
 
 create table produto (
@@ -32,7 +32,7 @@ create table carrinho(
 );
 
 -- Inserção de categorias
-INSERT into categoria(id_categoria, tipo)
+INSERT into categoria(id_categoria, category)
 values (1, 'salgados'), (2, 'bebidas'), (3, 'sobremesas'), (4, 'vitaminas');
 
 -- Inserção de produto
@@ -58,6 +58,7 @@ values (1, 14, 2);
 -- Consultas
 select * from produto;
 select * from pedido;
+select * from categoria;
 
 -- Consulta combinada
 select p.codigo, pr.name 
@@ -65,3 +66,14 @@ from carrinho
 inner join produto pr on carrinho.produto = pr.id
 inner join pedido p on carrinho.pedido = p.id_pedido
 where p.codigo = 55512;
+
+select p.id, p.name, p.description, p.price, p.image, p.quantidade, c.category from produto p
+inner join categoria c on p.category = c.id_categoria;
+
+
+/*
+SELECT
+  pg_size_pretty(pg_total_relation_size('pedido')) AS tamanho_total,
+  pg_size_pretty(pg_relation_size('pedido')) AS somente_dados,
+  pg_size_pretty(pg_total_relation_size('pedido') - pg_relation_size('pedido')) AS somente_indices;
+*/
