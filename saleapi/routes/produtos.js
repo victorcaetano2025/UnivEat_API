@@ -6,7 +6,7 @@ const router = Router();
 router.get('/produtos', async (req,res)=>{
 
     try {
-        const ResulProduto = await client.query("select * from produto;");
+        const ResulProduto = await client.query("select p.id, p.name, p.description, p.price, p.image, p.estoque, c.category from produto p inner join categoria c on p.category = c.id_categoria;");
             res.json(ResulProduto.rows);
     } catch (error) {
         console.error("erro ao buscar produtos",error);

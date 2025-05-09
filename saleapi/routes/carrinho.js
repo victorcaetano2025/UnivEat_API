@@ -10,7 +10,7 @@ router.get('/carrinho', async (req,res)=>{
         res.json(ResulCarrinho.rows);
     } catch (error) {
         console.error("erro ao buscar carrinho",error);
-        res.status(500).json({erro: "salamaleiko nos carrinhos" });
+        res.status(500).json({erro: "no carrinho" });
     }
 })
 

@@ -6,22 +6,23 @@ const router = Router();
 router.get('/pedido', async (req,res)=>{
 
 try {
-    const ResulPedido = await client.query("select * from pedido;");
+    const ResulPedido = await client.query("SELECT p.id, p.cliente, p.status, p.hora, STRING_AGG(c.quantidade_pedido || 'x ' || pr.name, ', ') AS itens, TO_CHAR(SUM(pr.price * c.quantidade_pedido), 'FM9999990.00') AS total FROM pedido p JOIN carrinho c ON p.id = c.pedido JOIN produto pr ON pr.id = c.produto GROUP BY p.id, p.cliente, p.status, p.hora ORDER BY p.id DESC;");
         res.json(ResulPedido.rows);
     
 } catch (error) {
     console.error("erro ao buscar pedidos",error);
-    res.status(500).json({erro: "salamaleiko nos pedidos" });
+    res.status(500).json({erro: "nos pedidos" });
 }
 })
 
 router.post('/pedido', async(req,res)=>{
     
-    const {codigo} = req.body;  
+    const {cliente,hora} = req.body;  
 
 try {
-    const query ="insert into pedido(codigo) values ($1) RETURNING *"; //returning * pode ser uma mensagem pois retorna o ultimo inserido
-    const values = [codigo]
+    
+    const query ="INSERT INTO pedido (cliente, hora)VALUES ($1, $2) RETURNING *;"; //returning * pode ser uma mensagem pois retorna o ultimo inserido
+    const values = [cliente,hora]
     const insercaopedido = await client.query(query,values)
     res.status(201).json(insercaopedido.rows[0]);//a response que ira para o front ser a res.rows retornada pela query
 } catch (error) {
