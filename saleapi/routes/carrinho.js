@@ -30,22 +30,27 @@ router.post('/carrinho', async(req,res)=>{
 
 })
 
-router.put('/carrinho', async(req,res)=>{
-    const{pedido,produto,quantidade} = req.body;
+router.put('/carrinho/pedidos', async(req,res)=>{
+    const{pedido, itens} = req.body;
+    const clientPg = await client.connect();
+
     try {
-        const query= "update carrinho set quantidade_pedido = $3 where pedido = $1 and produto = $2 RETURNING *";
-        const values = [pedido,produto,quantidade];
-        const atualizacarrinho = await client.query(query,values);
-
-        if (atualizacarrinho.rowCount === 0) {
-        return res.status(404).json({ mensagem: 'Item do carrinho não encontrado.' });}
-        res.status(200).json(atualizacarrinho.rows[0]);
-
+        await clientPg.query("BEGIN");
+        for (const item of itens) {
+            const query = "INSERT INTO carrinho (pedido, produto, quantidade_pedido) VALUES ($1, $2, $3) ON CONFLICT (pedido, produto) DO UPDATE SET quantidade_pedido = EXCLUDED.quantidade_pedido";
+            const values = [pedido, item.produto, item.quantidade];
+            await clientPg.query(query, values);
+        }
+        await clientPg.query("COMMIT");
+        res.status(200).json({message: "Carrinho atualizado com sucesso"});
     } catch (error) {
-    console.error('Erro ao atualizar carrinho:', error);
-    res.status(500).json({ erro: 'Erro interno no servidor.' });
+        await clientPg.query("ROLLBACK");
+        console.error("Erro ao atualizar carrinho", error);
+        res.status(500).json({error: "Erro ao atualizar carrinho"});
+    } finally {
+        clientPg.release();
     }
 
-})
+});
 
 export default router;
