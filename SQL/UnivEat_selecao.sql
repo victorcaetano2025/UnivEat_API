@@ -1,6 +1,5 @@
 -- Consultas
 	select * from produto;
-	select * from pedido;
 	select * from categoria;
 	select * from carrinho;
 
@@ -24,3 +23,7 @@ ORDER BY p.id DESC;
 -- select produtos OK
 	select p.id, p.name, p.description, p.price, p.image, p.estoque, c.category from produto p
 	inner join categoria c on p.category = c.id_categoria;
+
+-- select para pedico com seu items
+	select p.id from pedido p where id
+	inner join carrinho c on p.id = c.pedido;
