@@ -26,8 +26,10 @@ CREATE TABLE pedido (
 );
 
 CREATE TABLE carrinho (
-	pedido int REFERENCES pedido(id),
-	produto int REFERENCES produto(id),
-	quantidade_pedido int,
-	PRIMARY KEY (pedido, produto)
+    pedido INT,
+    produto INT,
+    quantidade_pedido INT,
+    PRIMARY KEY (pedido, produto),
+    FOREIGN KEY (pedido) REFERENCES pedido(id),
+    FOREIGN KEY (produto) REFERENCES produto(id)
 );

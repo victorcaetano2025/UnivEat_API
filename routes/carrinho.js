@@ -20,7 +20,7 @@ router.post('/carrinho', async(req,res)=>{
     try {
         await client.query("BEGIN");
         for (const item of itens) {
-            const query = "INSERT INTO carrinho (pedido, produto, quantidade_pedido) VALUES ($1, $2, $3) ON CONFLICT (pedido, produto) DO UPDATE SET quantidade_pedido = EXCLUDED.quantidade_pedido";
+            const query = `INSERT INTO carrinho (pedido, produto, quantidade_pedido) VALUES ($1, $2, $3) ON CONFLICT (pedido, produto) DO UPDATE SET quantidade_pedido = EXCLUDED.quantidade_pedido`;
             const values = [pedido, item.produto, item.quantidade];
             await client.query(query, values);
         }
@@ -30,9 +30,7 @@ router.post('/carrinho', async(req,res)=>{
         await client.query("ROLLBACK");
         console.error("Erro ao inserir carrinho", error);
         res.status(500).json({error: "Erro ao Inserir carrinho"});
-    } finally {
-        client.release();
-    }
+    } 
 });
 
 

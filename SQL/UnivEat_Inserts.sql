@@ -17,7 +17,7 @@ values (
 
 -- Inserção de pedidos (hora fica HH:MM:SS FrontEnd vai se adequar)
 INSERT INTO pedido (cliente, hora)
-VALUES ('victor', '18:11:32'), ('pedro', '18:12:20');
+VALUES ('victor', '18:11:32'), ('pedro', '18:12:20'),('matheus','17:25:30');
 
 -- Inserção no carrinho
 insert into carrinho (pedido, produto, quantidade_pedido)

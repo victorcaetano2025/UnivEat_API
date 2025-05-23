@@ -2,6 +2,7 @@
 	select * from produto;
 	select * from categoria;
 	select * from carrinho;
+	select * from pedido;
 
 -- get para pedidos FrontEnd
 SELECT p.id, p.cliente, p.status, p.hora,
