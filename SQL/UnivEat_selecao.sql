@@ -24,6 +24,9 @@ ORDER BY p.id DESC;
 	select p.id, p.name, p.description, p.price, p.image, p.estoque, c.category from produto p
 	inner join categoria c on p.category = c.id_categoria;
 
--- select para pedico com seu items
-	select p.id from pedido p where id
-	inner join carrinho c on p.id = c.pedido;
+-- select para pedico por id
+	SELECT p.id, pr.name, c.quantidade_pedido
+    FROM carrinho c
+    INNER JOIN produto pr ON c.produto = pr.id
+    INNER JOIN pedido p ON c.pedido = p.id
+    WHERE p.id = 1;

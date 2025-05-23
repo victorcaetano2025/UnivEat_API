@@ -13,7 +13,21 @@ try {
     console.error("erro ao buscar pedidos",error);
     res.status(500).json({erro: "nos pedidos" });
 }
-})
+});
+
+router.get('/pedido/:id', async (req,res)=>{
+    const {id} = req.params;
+    try {
+        const query = "SELECT p.id, pr.name, c.quantidade_pedido FROM carrinho c INNER JOIN produto pr ON c.produto = pr.id INNER JOIN pedido p ON c.pedido = p.id WHERE p.id = $1;";
+        const values = [id];
+        const ResulPedidoId = await client.query(query,values);
+        res.json(ResulPedidoId.rows);
+    
+} catch (error) {
+    console.error("erro ao buscar pedidos",error);
+    res.status(500).json({erro: "nos pedidos" });
+}
+});
 
 router.post('/pedido', async(req,res)=>{
     
