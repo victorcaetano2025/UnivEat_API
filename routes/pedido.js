@@ -29,6 +29,15 @@ router.get('/pedido/:id', async (req,res)=>{
 }
 });
 
+router.get('/pedido/historco',async (req,res)=>{
+    try {
+        const query = "SELECT * FROM pedido WHERE status = 'entregue'";
+    } catch (error) {
+        
+    }
+    
+})
+
 router.post('/pedido', async(req,res)=>{
     
     const {cliente,hora} = req.body;  
