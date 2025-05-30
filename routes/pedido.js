@@ -29,7 +29,7 @@ router.get('/pedido/:id', async (req,res)=>{
 }
 });
 
-router.get('/pedido/historco',async (req,res)=>{
+router.get('/pedido/histórico',async (req,res)=>{
     try {
         const query = "SELECT * FROM pedido WHERE status = 'entregue'";
     } catch (error) {
@@ -56,5 +56,18 @@ try {
 }
 
 })
+
+router.delete('/pedido/:id', async (req,res)=>{
+    const {id} = req.params;
+    try {
+        const query = "DELETE FROM pedido WHERE id = $1;";
+        const values = [id];
+        await client.query(query,values);
+        res.status(200).json({message: "Pedido deletado com sucesso"});
+    } catch (error) {
+        console.error("erro ao deletar pedido",error);
+        res.status(500).json({erro: "erro ao deletar pedido"});
+    }
+});
 
 export default router;

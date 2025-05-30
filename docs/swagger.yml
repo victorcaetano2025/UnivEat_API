@@ -1,0 +1,217 @@
+openapi: 3.0.0
+info:
+  title: UnivEat API
+  version: 1.0.0
+  description: Documentação da API UnivEat
+
+paths:
+  /api/carrinho:
+    get:
+      tags:
+        - Carrinho
+      summary: Lista todos os itens do carrinho
+      responses:
+        '200':
+          description: Lista de itens retornada
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+    post:
+      tags:
+        - Carrinho
+      summary: Insere itens no carrinho
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pedido:
+                  type: integer
+                itens:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      produto:
+                        type: integer
+                      quantidade:
+                        type: integer
+      responses:
+        '200':
+          description: Inserido com sucesso
+
+
+  /api/pedido:
+    get:
+      tags:
+        - Pedido
+      summary: Lista todos os pedidos com itens e valor total
+      responses:
+        '200':
+          description: Lista de pedidos retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+
+    post:
+      tags:
+        - Pedido
+      summary: Cria um novo pedido
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                cliente:
+                  type: string
+                hora:
+                  type: string
+                  format: time
+      responses:
+        '201':
+          description: Pedido criado com sucesso
+        '500':
+          description: Erro ao criar pedido
+
+  /api/pedido/{id}:
+    get:
+      tags:
+        - Pedido
+      summary: Busca os itens de um pedido específico
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Itens do pedido retornados com sucesso
+        '500':
+          description: Erro ao buscar o pedido
+
+    delete:
+      tags:
+        - Pedido
+      summary: Deleta um pedido pelo ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Pedido deletado com sucesso
+        '500':
+          description: Erro ao deletar pedido
+
+  /api/pedido/histórico:
+    get:
+      tags:
+        - Pedido
+      summary: Lista pedidos com status 'entregue'
+      responses:
+        '200':
+          description: Pedidos entregues retornados com sucesso
+        '500':
+          description: Erro ao buscar histórico
+
+    get:
+      tags:
+        - Produtos
+      summary: Lista todos os produtos com detalhes e categoria
+      responses:
+        '200':
+          description: Lista de produtos retornada com sucesso
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    name:
+                      type: string
+                    description:
+                      type: string
+                    price:
+                      type: number
+                      format: float
+                    image:
+                      type: string
+                    estoque:
+                      type: integer
+                    category:
+                      type: string
+
+
+    post:
+      tags:
+        - Produtos
+      summary: Insere um novo produto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - description
+                - price
+                - image
+                - quantidade
+                - category
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                price:
+                  type: number
+                  format: float
+                image:
+                  type: string
+                quantidade:
+                  type: integer
+                category:
+                  type: integer
+      responses:
+        '201':
+          description: Produto criado com sucesso
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  description:
+                    type: string
+                  price:
+                    type: number
+                    format: float
+                  image:
+                    type: string
+                  quantidade:
+                    type: integer
+                  category:
+                    type: integer
+        '500':
+          description: Erro ao inserir produto
