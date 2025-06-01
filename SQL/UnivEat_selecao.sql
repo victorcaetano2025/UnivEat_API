@@ -38,3 +38,6 @@ ORDER BY p.id DESC;
 	JOIN produto pr ON pr.id = c.produto
 	WHERE NOT status = 'entregue'
 	GROUP BY p.id, p.cliente, p.status, p.hora ORDER BY p.id DESC;
+
+
+	
