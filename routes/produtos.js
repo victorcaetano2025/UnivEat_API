@@ -4,7 +4,6 @@ import client from "../db.js";
 const router = Router();
 
 router.get('/produtos', async (req,res)=>{
-
     try {
         const ResulProduto = await client.query("select p.id, p.name, p.description, p.price, p.image, p.estoque, c.category from produto p inner join categoria c on p.category = c.id_categoria;");
             res.json(ResulProduto.rows);
@@ -15,9 +14,7 @@ router.get('/produtos', async (req,res)=>{
 });
 
 router.post('/produtos', async(req,res)=>{
-
     const {name,description,price,image,quantidade,category} = req.body;//campos que vão ser inseridos vendos do post/sera referente as colunas do produtos
-
     try {
         await client.query("BEGIN");
         const query = "INSERT INTO produto (name, description, price, image, quantidade, category) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *";
@@ -30,6 +27,19 @@ router.post('/produtos', async(req,res)=>{
         await client.query("ROLLBACK");
         console.error("erro ao inserir produto",error);
         res.status(500).json({erro:"Erro ao inserir produto"})
+    }
+});
+
+router.delete('/produtos/:id', async(req,res)=>{
+    const {id} = req.params;
+    try {
+        const query = "DELETE FROM produto WHERE id = $1";
+        const values = [id];
+        await client.query(query,values);
+        res.status(200).json({message: "Produto deletado com sucesso"});
+    } catch (error) {
+        console.error("erro ao deletar produto",error);
+        res.status(500).json({erro: "erro ao deletar produto"});
     }
 });
 

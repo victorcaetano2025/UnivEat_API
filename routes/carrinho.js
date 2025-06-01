@@ -4,7 +4,6 @@ import client from "../db.js";
 const router = Router();
 
 router.get('/carrinho', async (req,res)=>{
-
     try {
         const ResulCarrinho = await client.query("select * from carrinho;");
         res.json(ResulCarrinho.rows);
@@ -16,7 +15,6 @@ router.get('/carrinho', async (req,res)=>{
 
 router.post('/carrinho', async(req,res)=>{
    const{pedido, itens} = req.body;
-
     try {
         await client.query("BEGIN");
         for (const item of itens) {

@@ -31,3 +31,10 @@ ORDER BY p.id DESC;
     INNER JOIN produto pr ON c.produto = pr.id
     INNER JOIN pedido p ON c.pedido = p.id
     WHERE p.id = 1;
+-- testar
+	SELECT p.id, p.cliente, p.status, p.hora, STRING_AGG(c.quantidade_pedido || 'x ' || pr.name, ', ') AS itens, TO_CHAR(SUM(pr.price * c.quantidade_pedido), 'FM9999990.00') AS total 
+	FROM pedido p 
+	JOIN carrinho c ON p.id = c.pedido 
+	JOIN produto pr ON pr.id = c.produto
+	WHERE NOT status = 'entregue'
+	GROUP BY p.id, p.cliente, p.status, p.hora ORDER BY p.id DESC;
